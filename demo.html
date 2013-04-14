@@ -1,0 +1,31 @@
+<!DCOTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		.js-tip { }
+		.js-tip-msg { float: left; display: none; border: 1px solid #2f4f4f; background: #d3d3d3; }
+	</style>
+</head>
+<body>
+<span class="js-tip">
+	here
+	<div class="js-tip-msg" style="float:left;display: none;border: 1px solid #2f4f4f;">
+		some tip message<span style="color:red">style words</span>
+	</div>
+</span>
+
+<span class="js-tip">
+	here
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+	</div>
+</span>
+
+<script type="text/javascript" src="./lib/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="./lib/classDef.js"></script>
+<script type="text/javascript" src="./src/tip.js"></script>
+<script type="text/javascript">
+	Tip.init();
+</script>
+</body>
+</html>
