@@ -2,8 +2,11 @@
 <html>
 <head>
 	<style type="text/css">
-		.js-tip { }
-		.js-tip-msg { float: left; display: none; border: 1px solid #2f4f4f; background: #d3d3d3; }
+		.js-tip { border: 1px solid #4169e1; background-color: #ffebcd; }
+		.js-tip-msg { float: left; display: none; }
+		.js-tip-msg-wrapper { border: 3px solid #2f4f4f; background: #d3d3d3; }
+
+		#center { position: absolute; top: 50%; left: 50%; }
 	</style>
 </head>
 <body>
@@ -21,11 +24,23 @@
 	</div>
 </span>
 
+<span id="center" class="js-tip">
+	center
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+
 <script type="text/javascript" src="./lib/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="./lib/classDef.js"></script>
 <script type="text/javascript" src="./src/tip.js"></script>
+<script type="text/javascript" src="./src/tipWithArrow.js"></script>
 <script type="text/javascript">
 	Tip.init();
+
+	new TipWithArrow($("#center")[0]);
 </script>
 </body>
 </html>

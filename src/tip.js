@@ -10,7 +10,8 @@
 		 * @constructs
 		 */
 		init: function (targetEl) {
-			this._$target = cp.$(targetEl);
+			this._borderWidth = 3;
+			this._$target = $(targetEl);
 			this._$target.data(Tip.PROCESS_ALONE, true);
 			this._binding();
 		},
@@ -535,7 +536,7 @@
 
 		var $tip = $target.data("tip");
 		if (!$tip) {
-			$tip = $("<div style='z-index:10000001;position:absolute;visibility:hidden;'></div>");
+			$tip = $("<div class='js-tip-msg-wrapper' style='z-index:10000001;position:absolute;visibility:hidden;'></div>");
 		}
 		$tip.empty();
 		$tip.append($tipMsgEl);
@@ -686,4 +687,4 @@
 	};
 
 	window['Tip'] = Tip;
-})($, window);
+})($, this);
