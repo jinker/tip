@@ -38,7 +38,7 @@
 				this._super.apply(this, Array.prototype.slice.call(arguments, 0));
 				this._arrowLength = 10;
 				this._arrowWidth = 20;
-				this._borderWidth = 3;
+				this._borderWidth = 10;
 			},
 			/**
 			 * @override

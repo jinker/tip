@@ -57,6 +57,13 @@
 			this._unbinding();
 			this._$target.removeData(Tip.PROCESS_ALONE);
 			this._$target = null;
+		},
+		/**
+		 *
+		 * @return {number}
+		 */
+		getBorderWidth: function () {
+			return this._borderWidth;
 		}
 	});
 
@@ -138,9 +145,10 @@
 		 * @param {String} vAlign 垂直对齐
 		 * @param {String} hAlign 水平对齐
 		 * @param {Element} tipEl 提示层
+		 * @param {Tip} tip
 		 * @return {Boolean}
 		 */
-		canHandler: function (scrollLeft, scrollTop, viewPortWidth, viewPortHeight, targetLeft, targetTop, targetWidth, targetHeight, tipWidth, tipHeight, vAlign, hAlign, tipEl) {
+		canHandler: function (scrollLeft, scrollTop, viewPortWidth, viewPortHeight, targetLeft, targetTop, targetWidth, targetHeight, tipWidth, tipHeight, vAlign, hAlign, tipEl, tip) {
 			this._scrollLeft = scrollLeft;
 			this._scrollTop = scrollTop;
 			this._viewPortWidth = viewPortWidth;
@@ -154,6 +162,7 @@
 			this._vAlign = vAlign;
 			this._hAlign = hAlign;
 			this._tipEl = tipEl;
+			this._tip = tip;
 			return false;
 		},
 		/**
@@ -602,7 +611,21 @@
 		var positionHandler;
 		for (var i = 0, l = pHandlers.length; i < l; i++) {
 			positionHandler = pHandlers[i];
-			if (positionHandler.canHandler(scrollLeft, scrollTop, viewPortWidth, viewPortHeight, targetLeft, targetTop, targetWidth, targetHeight, tipWidth, tipHeight, vAlign, hAlign, $tip[0])) {
+			if (positionHandler.canHandler(
+				scrollLeft,
+				scrollTop,
+				viewPortWidth,
+				viewPortHeight,
+				targetLeft,
+				targetTop,
+				targetWidth,
+				targetHeight,
+				tipWidth,
+				tipHeight,
+				vAlign,
+				hAlign,
+				$tip[0])
+				) {
 				var p = positionHandler.getPosition();
 				$tip.css({
 					visibility: "",
@@ -643,8 +666,6 @@
 	 * @deprecated
 	 */
 	Tip.init = function () {
-		console.log("init");
-		var targetSelector = ".js-tip";
 		$(document)
 			.on("click", function () {
 				var target;
@@ -653,7 +674,17 @@
 						Tip.hide(target);
 					}
 				}
-			})
+			});
+		Tip.bind(document);
+	};
+
+	/**
+	 * 绑定el元素内部具有tip效果
+	 * @param {Element} el
+	 */
+	Tip.bind = function (el) {
+		var targetSelector = ".js-tip";
+		$(el)
 			.on("mouseenter", targetSelector, function () {
 				var $this = $(this);
 				if (!$this.data(Tip.PROCESS_ALONE)) {
@@ -667,6 +698,15 @@
 				}
 			});
 	};
+
+	/**
+	 *
+	 * @param {Element} el
+	 */
+	Tip.unbind = function (el) {
+//TODO
+	};
+
 	/**
 	 * 显示tip
 	 * @param {String|Jquery} target 目标
