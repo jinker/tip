@@ -5,27 +5,58 @@
  * @author jinker
  */
 (function ($, window) {
+	var tipIdPrefix = "tip-";
+	var tipCount = 0;
+	var tipMap = {};
+
+	/**
+	 * 获取Tip
+	 * @param el
+	 * @return {Tip}
+	 */
+	var getTip = function (el) {
+		var $el = $(el);
+		var tipId = $el.data("tip-id");
+		var tip = tipMap[tipId];
+		if (!tip) {
+			tip = new Tip(el);
+			tipId = tipIdPrefix + (tipCount++);
+			tipMap[tipId] = tip;
+			$el.data("tip-id", tipId);
+		}
+		return tip;
+	};
+
 	var Tip = Class.extend({
 		/**
 		 * @constructs
 		 */
 		init: function (targetEl) {
-			this._borderWidth = 3;
+			this._arrowLength = 10;
+			this._arrowWidth = 20;
+			this._borderWidth = 10;
+			this._id = tipIdPrefix + (tipCount++);
 			this._$target = $(targetEl);
 			this._$target.data(Tip.PROCESS_ALONE, true);
 			this._binding();
 		},
 		/**
+		 * @return {string}
+		 */
+		getId: function () {
+			return this._id;
+		},
+		/**
 		 * @protected
 		 */
 		_onShow: function () {
-			Tip._show(this._$target);
+			Tip._show(this._$target, this, null);
 		},
 		/**
 		 * @protected
 		 */
 		_onHide: function () {
-			Tip._hide(this._$target);
+			Tip._hide(this._$target, this);
 		},
 		/**
 		 * @protected
@@ -57,6 +88,8 @@
 			this._unbinding();
 			this._$target.removeData(Tip.PROCESS_ALONE);
 			this._$target = null;
+			tipMap[this._id] = null;
+			delete tipMap[this._id];
 		},
 		/**
 		 *
@@ -525,9 +558,10 @@
 	/**
 	 * 鼠标进入目标
 	 * @param {$} $target
-	 * @param {Array.<Tip.PositionHandler>=} $target
+	 * @param {Tip} tip
+	 * @param {Array.<Tip.PositionHandler>|null|undefined} $target
 	 */
-	var onMouseEnter = Tip._show = function ($target, positionHandlers) {
+	var onMouseEnter = Tip._show = function ($target, tip, positionHandlers) {
 		var temp;
 		var $tipMsgEl = $target.find(".js-tip-msg").eq(0);
 		if ($tipMsgEl.length == 0) {
@@ -545,7 +579,7 @@
 
 		var $tip = $target.data("tip");
 		if (!$tip) {
-			$tip = $("<div class='js-tip-msg-wrapper' style='z-index:10000001;position:absolute;visibility:hidden;'></div>");
+			$tip = $("<div class='js-tip-msg-wrapper' style='border-width:" + tip._borderWidth + "px;z-index:10000001;position:absolute;visibility:hidden;'></div>");
 		}
 		$tip.empty();
 		$tip.append($tipMsgEl);
@@ -575,7 +609,7 @@
 		var targetTop = temp.top;
 		var targetWidth = $target.outerWidth();
 		var targetHeight = $target.outerHeight();
-		temp = $tip.children().eq(0);
+		temp = $tip;
 		var tipWidth = temp.outerWidth();
 		var tipHeight = temp.outerHeight();
 
@@ -624,15 +658,17 @@
 				tipHeight,
 				vAlign,
 				hAlign,
-				$tip[0])
-				) {
+				$tip[0],
+				tip
+			)) {
 				var p = positionHandler.getPosition();
 				$tip.css({
 					visibility: "",
 					left: p.left,
 					top: p.top,
-					width: tipWidth,
-					height: tipHeight
+					width: tipWidth - 2 * tip._borderWidth,
+					height: tipHeight - 2 * tip._borderWidth,
+					'border-width': tip._borderWidth
 				});
 				$tip.show();
 				break;
@@ -646,8 +682,9 @@
 	/**
 	 * 鼠标离开目标
 	 * @param {$} $target
+	 * @param {Tip|null|undefined} tip
 	 */
-	var onMouseLeave = Tip._hide = function ($target) {
+	var onMouseLeave = Tip._hide = function ($target, tip) {
 		$target.data(dataMouseEnterKey, false);
 
 		//跳出js单线程，使得其他事件首先发生
@@ -683,20 +720,29 @@
 	 * @param {Element} el
 	 */
 	Tip.bind = function (el) {
-		var targetSelector = ".js-tip";
-		$(el)
-			.on("mouseenter", targetSelector, function () {
+		if (el) {
+			var mouseEnterHandler = function () {
 				var $this = $(this);
 				if (!$this.data(Tip.PROCESS_ALONE)) {
-					onMouseEnter($this);
+					var tip = getTip(this);
+					tip._onShow();
 				}
-			})
-			.on("mouseleave", targetSelector, function () {
+			};
+			var mouseLeaveHandler = function () {
 				var $this = $(this);
 				if (!$this.data(Tip.PROCESS_ALONE)) {
-					onMouseLeave($this);
+					var tip = getTip(this);
+					tip._onHide();
+					tip.destroy();
+					tip = null;
 				}
-			});
+			};
+			$(el)
+				.data("tip-mouseEnterHandler", mouseEnterHandler)
+				.data("tip-mouseLeaveHandler", mouseLeaveHandler)
+				.on("mouseenter", ".js-tip", mouseEnterHandler)
+				.on("mouseleave", ".js-tip", mouseLeaveHandler);
+		}
 	};
 
 	/**
@@ -704,7 +750,16 @@
 	 * @param {Element} el
 	 */
 	Tip.unbind = function (el) {
-//TODO
+		if (el) {
+			var mouseEnterHandler = $(el).data("tip-mouseEnterHandler");
+			var mouseLeaveHandler = $(el).data("tip-mouseLeaveHandler");
+			if (mouseEnterHandler) {
+				$(el).off("mouseenter", ".js-tip", mouseEnterHandler);
+			}
+			if (mouseLeaveHandler) {
+				$(el).off("mouseleave", ".js-tip", mouseLeaveHandler);
+			}
+		}
 	};
 
 	/**

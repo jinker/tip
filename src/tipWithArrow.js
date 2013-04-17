@@ -18,7 +18,7 @@
 		 * @protected
 		 */
 		_onShow: function () {
-			Tip._show(this._$target, TipWithArrow.positionHandlersTop);
+			Tip._show(this._$target, this, TipWithArrow.positionHandlersTop);
 		},
 		_onHide: function () {
 //			this._super();
@@ -36,9 +36,6 @@
 			 */
 			init: function () {
 				this._super.apply(this, Array.prototype.slice.call(arguments, 0));
-				this._arrowLength = 10;
-				this._arrowWidth = 20;
-				this._borderWidth = 10;
 			},
 			/**
 			 * @override
@@ -48,14 +45,18 @@
 				var res = this._super.apply(this, Array.prototype.slice.call(arguments, 0));
 
 				if (res) {
-					var arrowLeft = this._targetLeft + this._targetWidth / 2 - this._arrowWidth / 2 - this._resultLeft;
+					var arrowWidth = this._tip._arrowWidth;
+					var arrowLength = this._tip._arrowLength;
+					var borderWidth = this._tip._borderWidth;
 
-					var borderWidthStr = this._arrowLength + "px " + this._arrowWidth / 2 + "px 0 " + this._arrowWidth / 2 + "px";
-					var $arrow = $("<div class='tip-arrow' style='position:absolute;width:0;height:0;left:" + arrowLeft + "px;bottom:" + (-this._arrowLength) + "px;border-style:solid;border-color:#2f4f4f transparent transparent transparent;border-width:" + borderWidthStr + ";'>" +
-						"<div class='tip-arrow-inner' style='position:absolute;width:0;height:0;left:" + (-this._arrowWidth / 2) + "px;top:" + (-this._arrowLength - this._borderWidth /** Math.SQRT1_2*/) + "px;border-style:solid;border-color:#d3d3d3 transparent transparent transparent;border-width:" + borderWidthStr + "'></div>" +
+					var arrowLeft = this._targetLeft + this._targetWidth / 2 - arrowWidth / 2 - this._resultLeft - borderWidth;
+
+					var borderWidthStr = arrowLength + "px " + arrowWidth / 2 + "px 0 " + arrowWidth / 2 + "px";
+					var $arrow = $("<div class='tip-arrow' style='position:absolute;width:0;height:0;left:" + arrowLeft + "px;bottom:" + (-arrowLength - borderWidth) + "px;border-style:solid;border-color:#2f4f4f transparent transparent transparent;border-width:" + borderWidthStr + ";'>" +
+						"<div class='tip-arrow-inner' style='position:absolute;width:0;height:0;left:" + (-arrowWidth / 2) + "px;top:" + (-arrowLength - borderWidth /** Math.SQRT1_2*/) + "px;border-style:solid;border-color:#d3d3d3 transparent transparent transparent;border-width:" + borderWidthStr + "'></div>" +
 						"</div>");
 					$(this._tipEl).append($arrow);
-					this._resultTop -= this._arrowLength + this._borderWidth;
+					this._resultTop -= arrowLength;
 				}
 
 				return res;
