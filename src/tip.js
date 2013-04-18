@@ -32,9 +32,7 @@
 		 * @constructs
 		 */
 		init: function (targetEl) {
-			this._arrowLength = 10;
-			this._arrowWidth = 20;
-			this._borderWidth = 10;
+			this._borderWidth = 1;
 			this._id = tipIdPrefix + (tipCount++);
 			this._$target = $(targetEl);
 			this._$target.data(Tip.PROCESS_ALONE, true);

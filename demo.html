@@ -7,24 +7,47 @@
 		.js-tip-msg-wrapper { border: 1px solid #2f4f4f; background: #d3d3d3; }
 
 		#center { position: absolute; top: 50%; left: 50%; }
+		#top_left { position: absolute; top: 0; left: 0; }
+		#top_right { position: absolute; top: 0; right: 0; }
+		#bottom_right { position: absolute; bottom: 0; right: 0; }
+		#bottom_left { position: absolute; bottom: 0; left: 0; }
 	</style>
 </head>
 <body>
-<span class="js-tip">
-	here
-	<div class="js-tip-msg" style="float:left;display: none;border: 1px solid #2f4f4f;">
-		some tip message<span style="color:red">style words</span>
-	</div>
-</span>
-
-<span class="js-tip">
-	here
+<span id="center" class="js-tip">
+	center
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
 	</div>
 </span>
 
-<span id="center" class="js-tip">
+<span id="top_left" class="js-tip">
+	center
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="top_right" class="js-tip">
+	center
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="bottom_right" class="js-tip">
+	center
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="bottom_left" class="js-tip">
 	center
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
@@ -41,6 +64,10 @@
 	Tip.init();
 
 	new TipWithArrow($("#center")[0]);
+	new TipWithArrow($("#top_left")[0]);
+	new TipWithArrow($("#top_right")[0]);
+	new TipWithArrow($("#bottom_right")[0]);
+	new TipWithArrow($("#bottom_left")[0]);
 </script>
 </body>
 </html>
