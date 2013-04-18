@@ -8,14 +8,18 @@
 
 		#center { position: absolute; top: 50%; left: 50%; }
 		#top_left { position: absolute; top: 0; left: 0; }
+		#top { position: absolute; top: 0; left: 50%; }
 		#top_right { position: absolute; top: 0; right: 0; }
+		#right { position: absolute; top: 50%; right: 0; }
 		#bottom_right { position: absolute; bottom: 0; right: 0; }
+		#bottom { position: absolute; bottom: 0; left: 50%; }
 		#bottom_left { position: absolute; bottom: 0; left: 0; }
+		#left { position: absolute; display: block; height: 100px; margin-top: -50px; top: 50%; left: 0; }
 	</style>
 </head>
 <body>
 <span id="center" class="js-tip">
-	center
+	cen
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
 
@@ -24,7 +28,15 @@
 </span>
 
 <span id="top_left" class="js-tip">
-	center
+	top_left
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="top" class="js-tip">
+	top
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
 
@@ -32,7 +44,15 @@
 	</div>
 </span>
 <span id="top_right" class="js-tip">
-	center
+	top_right
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="right" class="js-tip">
+	right
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
 
@@ -40,7 +60,15 @@
 	</div>
 </span>
 <span id="bottom_right" class="js-tip">
-	center
+	bottom_right
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
+
+		<div>some other message</div>
+	</div>
+</span>
+<span id="bottom" class="js-tip">
+	bottom
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
 
@@ -48,26 +76,37 @@
 	</div>
 </span>
 <span id="bottom_left" class="js-tip">
-	center
+	bottom_left
 	<div class="js-tip-msg">
 		some tip message<span style="color:red">style words</span>
 
 		<div>some other message</div>
 	</div>
 </span>
+<span id="left" class="js-tip">
+	left
+	<div class="js-tip-msg">
+		some tip message<span style="color:red">style words</span>
 
+		<div>some other message</div>
+	</div>
+</span>
 <script type="text/javascript" src="./lib/jquery-1.8.2.js"></script>
 <script type="text/javascript" src="./lib/classDef.js"></script>
 <script type="text/javascript" src="./src/tip.js"></script>
 <script type="text/javascript" src="./src/tipWithArrow.js"></script>
 <script type="text/javascript">
-	Tip.init();
+//	Tip.init();
 
 	new TipWithArrow($("#center")[0]);
 	new TipWithArrow($("#top_left")[0]);
+	new TipWithArrow($("#top")[0]);
 	new TipWithArrow($("#top_right")[0]);
+	new TipWithArrow($("#right")[0]);
 	new TipWithArrow($("#bottom_right")[0]);
+	new TipWithArrow($("#vottom")[0]);
 	new TipWithArrow($("#bottom_left")[0]);
+	new TipWithArrow($("#left")[0]);
 </script>
 </body>
 </html>

@@ -126,20 +126,20 @@
 	var showingTargetsMap = {};
 
 	//提示层显示位置
-	var POSITION = {
+	var POSITION = Tip.POSITION = {
 		TOP: "t",
 		RIGHT: "r",
 		BOTTOM: "b",
 		LEFT: "l"
 	};
 	//垂直对齐
-	var V_ALIGN = {
+	var V_ALIGN = Tip.V_LAIN = {
 		TOP: "t",
 		MIDDLE: "m",
 		BOTTOM: "b"
 	};
 	//水平对齐
-	var H_ALIGN = {
+	var H_ALIGN = Tip.H_LAIN = {
 		LEFT: "l",
 		CENTER: "c",
 		RIGHT: "r"
